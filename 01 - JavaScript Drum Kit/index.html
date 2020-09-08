@@ -9,43 +9,51 @@
 	<body>
 		<div class="keys">
 			<div data-key="65" class="key">
+				<input class="key__volume" type="range" min="0" max="100" />
 				<kbd>A</kbd>
 				<span class="sound">clap</span>
 			</div>
 			<div data-key="83" class="key">
+				<input class="key__volume" type="range" min="0" max="100" />
 				<kbd>S</kbd>
 				<span class="sound">hihat</span>
 			</div>
 			<div data-key="68" class="key">
+				<input class="key__volume" type="range" min="0" max="100" />
 				<kbd>D</kbd>
 				<span class="sound">kick</span>
 			</div>
 			<div data-key="70" class="key">
+				<input class="key__volume" type="range" min="0" max="100" />
 				<kbd>F</kbd>
 				<span class="sound">openhat</span>
 			</div>
 			<div data-key="71" class="key">
+				<input class="key__volume" type="range" min="0" max="100" />
 				<kbd>G</kbd>
 				<span class="sound">boom</span>
 			</div>
 			<div data-key="72" class="key">
+				<input class="key__volume" type="range" min="0" max="100" />
 				<kbd>H</kbd>
 				<span class="sound">ride</span>
 			</div>
 			<div data-key="74" class="key">
+				<input class="key__volume" type="range" min="0" max="100" />
 				<kbd>J</kbd>
 				<span class="sound">snare</span>
 			</div>
 			<div data-key="75" class="key">
+				<input class="key__volume" type="range" min="0" max="100" />
 				<kbd>K</kbd>
 				<span class="sound">tom</span>
 			</div>
 			<div data-key="76" class="key">
+				<input class="key__volume" type="range" min="0" max="100" />
 				<kbd>L</kbd>
 				<span class="sound">tink</span>
 			</div>
 		</div>
-
 		<audio data-key="65" src="sounds/clap.wav"></audio>
 		<audio data-key="83" src="sounds/hihat.wav"></audio>
 		<audio data-key="68" src="sounds/kick.wav"></audio>
@@ -59,6 +67,25 @@
 		<script>
 			window.addEventListener("keydown", playSound);
 
+			const keys = document.querySelectorAll(".key");
+			keys.forEach((key) => {
+				if (key.querySelector(".key__volume")) {
+					key.querySelector(".key__volume").addEventListener(
+						"input",
+						changeVolume
+					);
+				}
+
+				key.addEventListener("transitionend", removeTransition);
+			});
+
+			function changeVolume(e) {
+				const audio = document.querySelector(
+					`audio[data-key="${e.target.parentElement.dataset.key}"]`
+				);
+				audio.volume = e.target.value / 100;
+			}
+
 			function playSound(e) {
 				const audio = document.querySelector(
 					`audio[data-key="${e.keyCode}"]`
@@ -68,12 +95,10 @@
 					`.key[data-key="${e.keyCode}"]`
 				);
 				if (!audio) return;
-
-				console.log(audio);
-				console.log(key);
-
-				audio.currentTime = 0;
-				audio.play();
+				let cloneAudio = audio.cloneNode();
+				cloneAudio.volume = audio.volume;
+				cloneAudio.play();
+				console.log("audio", audio, "clone", audio.cloneNode(true));
 				key.classList.add("playing");
 			}
 
@@ -81,11 +106,6 @@
 				if (e.propertyName !== "transform") return;
 				this.classList.remove("playing");
 			}
-
-			const keys = document.querySelectorAll(".key");
-			keys.forEach((key) =>
-				key.addEventListener("transitionend", removeTransition)
-			);
 		</script>
 	</body>
 </html>

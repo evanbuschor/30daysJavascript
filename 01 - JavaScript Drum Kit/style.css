@@ -1,7 +1,6 @@
 html {
 	font-size: 10px;
-	background: url(https://cdn.hipwallpaper.com/i/74/2/gKmqck.jpg) bottom
-		center;
+	background: url(./images/background.jpg) bottom center;
 	background-size: cover;
 }
 
@@ -32,6 +31,8 @@ html {
 	color: white;
 	background: rgba(0, 0, 0, 0.4);
 	text-shadow: 0 0 0.5rem black;
+	display: flex;
+	flex-direction: column;
 }
 
 .playing {

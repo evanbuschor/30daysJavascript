@@ -33,6 +33,7 @@ html {
 	text-shadow: 0 0 0.5rem black;
 	display: flex;
 	flex-direction: column;
+	user-select: none;
 }
 
 .playing {
